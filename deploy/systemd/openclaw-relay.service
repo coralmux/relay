@@ -1,0 +1,16 @@
+[Unit]
+Description=OpenClaw Relay Server
+After=network.target
+
+[Service]
+Type=simple
+User=openclaw
+Group=openclaw
+ExecStart=/usr/local/bin/openclaw-relay -addr :443 -domain relay.openclaw.dev -db /var/lib/openclaw-relay/relay.db
+Restart=always
+RestartSec=5
+Environment=RELAY_ADMIN_KEY=
+WorkingDirectory=/var/lib/openclaw-relay
+
+[Install]
+WantedBy=multi-user.target

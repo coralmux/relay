@@ -1,0 +1,19 @@
+# Binaries
+coralmux-relay
+openclaw-relay
+openclaw-relay-*
+relay
+dist/
+
+# Database
+*.db
+*.db-journal
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
