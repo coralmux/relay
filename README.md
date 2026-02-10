@@ -9,6 +9,18 @@ NAT-transparent WebSocket relay for AI agents. Connect your phone to your own AI
 
 Both sides make **outbound** connections. Works behind any NAT/firewall.
 
+## Works With
+
+| Agent Frameworks | Mobile Clients |
+|------------------|----------------|
+| [OpenClaw](https://github.com/openclaw/openclaw) | Android / iOS |
+| LangChain | React Native |
+| AutoGPT | Flutter |
+| CrewAI | Web |
+| Your own bot | Any WebSocket client |
+
+Protocol-based — if it speaks WebSocket + JSON, it works.
+
 ## Quick Install
 
 ```bash
