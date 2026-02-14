@@ -63,16 +63,65 @@ Share this token with your phone app and agent to pair them.
 
 ## Architecture
 
-```
-┌──────────────┐         ┌─────────────────┐         ┌──────────────┐
-│ 📱 Phone App  │──WSS──▶│  CoralMux Relay │◀──WSS──│ 🤖 AI Agent  │
-│              │         │                 │         │              │
-│  E2E encrypt │         │  Forward only   │         │  E2E decrypt │
-│  ───────────▶│         │  (can't read)   │         │◀─────────────│
-└──────────────┘         └─────────────────┘         └──────────────┘
+```mermaid
+graph LR
+    subgraph Phone["📱 Phone (NAT)"]
+        App[Mobile App]
+    end
+
+    subgraph Cloud["☁️ Cloud"]
+        Relay[CoralMux Relay]
+    end
+
+    subgraph Home["🏠 Home (NAT)"]
+        Agent[Bridge Agent]
+        GW[AI Gateway]
+        LLM["🧠 LLM API"]
+    end
+
+    App -- "WSS (outbound)" --> Relay
+    Relay -- "WSS (outbound)" --- Agent
+    Agent -- "WS (localhost)" --> GW
+    GW -- "HTTPS" --> LLM
+
+    style Relay fill:#f9a825,stroke:#f57f17,color:#000
+    style App fill:#42a5f5,stroke:#1565c0,color:#fff
+    style Agent fill:#66bb6a,stroke:#2e7d32,color:#fff
+    style GW fill:#ab47bc,stroke:#6a1b9a,color:#fff
+    style LLM fill:#ef5350,stroke:#c62828,color:#fff
 ```
 
+**Both sides make outbound connections** — no port forwarding needed.
+
 The relay only sees encrypted blobs. It forwards messages but cannot decrypt them.
+
+### Data Flow
+
+```mermaid
+sequenceDiagram
+    participant P as 📱 Phone
+    participant R as ☁️ Relay
+    participant A as 🔌 Agent
+    participant G as ⚙️ Gateway
+    participant L as 🧠 LLM
+
+    Note over P,A: 1. Pairing (one-time)
+    P->>R: Connect (token)
+    A->>R: Connect (same token)
+    R-->>P: Paired ✅
+    R-->>A: Paired ✅
+    P->>A: 🔑 Key Exchange (X25519)
+
+    Note over P,L: 2. Chat Message
+    P->>R: Encrypted message
+    R->>A: Forward (can't read)
+    A->>G: Decrypt → chat.send
+    G->>L: API call
+    L-->>G: Stream tokens
+    G-->>A: Stream response
+    A-->>R: Encrypt → forward
+    R-->>P: Encrypted stream
+```
 
 ## E2E Encryption
 
