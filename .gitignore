@@ -2,7 +2,7 @@
 coralmux-relay
 openclaw-relay
 openclaw-relay-*
-relay
+/relay
 dist/
 
 # Database
