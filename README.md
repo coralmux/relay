@@ -140,7 +140,7 @@ sudo systemctl enable --now coralmux-relay
 
 ### Docker
 ```bash
-docker run -p 443:443 ghcr.io/coralmux/relay \
+docker run -p 443:443 coralmux/relay \
   -domain relay.example.com -admin-key your-secret
 ```
 
