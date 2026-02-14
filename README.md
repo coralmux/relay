@@ -133,11 +133,37 @@ make build-all      # All platforms (dist/)
 
 ## Deployment
 
-### systemd
+### Linux (systemd)
 ```bash
 sudo cp coralmux-relay /usr/local/bin/
 sudo cp deploy/systemd/coralmux-relay.service /etc/systemd/system/
 sudo systemctl enable --now coralmux-relay
+```
+
+### macOS (launchd)
+```bash
+cat > ~/Library/LaunchAgents/com.coralmux.relay.plist << 'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.coralmux.relay</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/local/bin/coralmux-relay</string>
+        <string>-addr</string>
+        <string>:8443</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+</dict>
+</plist>
+EOF
+
+launchctl load ~/Library/LaunchAgents/com.coralmux.relay.plist
 ```
 
 ### Docker
