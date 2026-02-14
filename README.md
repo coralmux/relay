@@ -24,10 +24,10 @@ Protocol-based — if it speaks WebSocket + JSON, it works.
 ## Quick Install
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/openclaw/coralmux/main/install.sh | sh
+curl -sSL https://raw.githubusercontent.com/coralmux/relay/main/install.sh | sh
 ```
 
-Or download from [Releases](https://github.com/openclaw/coralmux/releases).
+Or download from [Releases](https://github.com/coralmux/relay/releases).
 
 ## Features
 
@@ -157,8 +157,8 @@ See [PROTOCOL.md](PROTOCOL.md) for full protocol specification.
 ## Build from Source
 
 ```bash
-git clone https://github.com/openclaw/coralmux.git
-cd coralmux
+git clone https://github.com/coralmux/relay.git
+cd relay
 make build          # Native binary
 make build-all      # All platforms (dist/)
 ```
