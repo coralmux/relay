@@ -1,5 +1,7 @@
 # CoralMux Relay
 
+[🇰🇷 한국어](README.ko.md)
+
 NAT-transparent WebSocket relay with end-to-end encryption. Connect any two WebSocket peers without port forwarding.
 
 ```
