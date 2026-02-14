@@ -1,13 +1,12 @@
 FROM golang:1.24-alpine AS builder
-RUN apk add --no-cache gcc musl-dev
 WORKDIR /build
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=1 go build -o openclaw-relay ./cmd/relay/
+RUN CGO_ENABLED=0 go build -ldflags="-s -w" -o coralmux-relay ./cmd/relay/
 
 FROM alpine:3.20
 RUN apk add --no-cache ca-certificates
-COPY --from=builder /build/openclaw-relay /usr/local/bin/
+COPY --from=builder /build/coralmux-relay /usr/local/bin/
 EXPOSE 8443
-ENTRYPOINT ["openclaw-relay"]
+ENTRYPOINT ["coralmux-relay"]
