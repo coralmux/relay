@@ -12,10 +12,13 @@ type SQLiteStore struct {
 }
 
 func NewSQLiteStore(dbPath string) (*SQLiteStore, error) {
-	db, err := sql.Open("sqlite", dbPath+"?_journal_mode=WAL")
+	db, err := sql.Open("sqlite", dbPath+"?_journal_mode=WAL&_busy_timeout=5000")
 	if err != nil {
 		return nil, err
 	}
+
+	// SQLite doesn't support concurrent writes — serialize all access
+	db.SetMaxOpenConns(1)
 
 	if err := migrate(db); err != nil {
 		db.Close()
